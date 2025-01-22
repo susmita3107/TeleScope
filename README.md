@@ -123,6 +123,114 @@ The output of this method is channel names which needs to be specified in the pu
   "ttl_period": null
 }
 ```
+# The Telegram Toolkit: a Tool to enrich Telegram Channel Data
+ This Toolkit is a separate enrichment to the raw data.
+ ## Structure
+
+- *data/* contains sample data composed of different files. Each file contains messages from a specific channel.
+
+- *sample_output_entities/* and *sample_output/* contain sample output dataset as described below.
+
+- *TelegramToolkit.py* contains the source code of the toolkit that implements the *TelegramToolkit* and *TelegramMessage* classes devised to perform the tool functions.
+
+- *requirements.txt* the requirements necessary to use the Telegram Toolkit. 
+
+
+## How to Use
+
+1. Install the requirements by running ```pip install -r requirements.txt```
+
+2. Use 
+```
+TelegramToolkit.py [-h] [-i INPUT_DATA_DIR] [-o OUTPUT_DATA_DIR] [-re] [-ccg] [-cmc] [-gn GRAPH_NAME] [-mcn MESSAGE_CHAIN_NAME] 
+                   [-ef] [-efth ENTITY_FREQUENCY_THRESHOLD] [-eft] [-efs ENTITY_FREQUENCY_DEST] [-efc] [-efcth ENTITY_FREQUENCY_CHANNEL_THRESHOLD]
+                  [-efct] [-efcs ENTITY_FREQUENCY_CHANNEL_DEST]
+```
+
+The description of the parameters is:
+```
+Telegram Toolkit Commands
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT_DATA_DIR, --input-data-dir INPUT_DATA_DIR
+                        The input directory containing raw data from Telegram. Default: 'data/'
+  -o OUTPUT_DATA_DIR, --output-data-dir OUTPUT_DATA_DIR
+                        The output directory where the results will be saved. Default: 'out/'
+  -re, --resolve-entities
+                        Resolve the entities in the raw Telegram data collection.
+  -ccg, --create-channel-graph
+                        Create the channel-to-channel graph from the Telegram data collection.
+  -cmc, --create-message-chain
+                        Create the message chains of the messages from the Telegram data collection.
+  -gn GRAPH_NAME, --graph-name GRAPH_NAME
+                        Name of the graph created using the '-ccg' or '--create-channel-graph' option. Default: mygraph
+  -mcn MESSAGE_CHAIN_NAME, --message-chain-name MESSAGE_CHAIN_NAME
+                        Name of the CSV file containing the information to which channels a message was forwarded to. 
+                        It only works with either '-cmc' or '--create-message-chain' option.
+                        Default: my_message_chain
+  -ef, --entity-frequency
+                        Compute the frequency of the entities on the whole data.
+  -efth ENTITY_FREQUENCY_THRESHOLD, --entity-frequency-threshold ENTITY_FREQUENCY_THRESHOLD
+                        Threshold to cut the entity frequency. Only entities appearing a number of times equal to or greater than the threshold are saved. 
+                        It only works with either '-ef' or '--entity-frequency' option. Default: 1
+  -eft, --entity-frequency-type
+                        The Telegram Toolkit will consider the entity type while computing the entity frequency. 
+                        It only works with either '-ef' or '--entity-frequency' option.
+  -efs ENTITY_FREQUENCY_DEST, --entity-frequency-save ENTITY_FREQUENCY_DEST
+                        The output file name containing the entity frequency. 
+                        It only works with either '-ef' or '--entity-frequency' option. 
+                        Default: entity_frequency
+  -efc, --entity-frequency-channel
+                        Compute the frequency of the entities over channels.
+  -efcth ENTITY_FREQUENCY_CHANNEL_THRESHOLD, --entity-frequency-channel-threshold ENTITY_FREQUENCY_CHANNEL_THRESHOLD
+                        Threshold to cut the entity frequency over channels. Only entities appearing a number of times equal to or greater than the threshold are saved. 
+                        It only works with either '-efc' or '--entity-frequency-channel' option. 
+                        Default: 1
+  -efct, --entity-frequency-channel-type
+                        The Telegram Toolkit will consider the entity type while computing the entity frequency over channels. 
+                        It only works with either '-efc' or '--entity-frequency-channel' option.
+  -efcs ENTITY_FREQUENCY_CHANNEL_DEST, --entity-frequency-channel-save ENTITY_FREQUENCY_CHANNEL_DEST
+                        The output file name containing the entity frequency over channels. 
+                        It only works with either '-efc' or '--entity-frequency-channel' option. 
+                        Default: entity_frequency_over_channels
+
+
+```
+
+### Input data
+
+A data sample is available with this repository under *data/*.
+
+If interested the user can feed the TelegramToolkit with the data collected by [TelegramDataCollector]() [In development]
+
+
+
+### Sample Input to the method
+
+Please explore *data/*.
+
+
+### Sample Output of the method
+
+A sample output (using the data under *data/*) is made available with this repository.
+
+- *sample_output_entities/* contains all the messages with their entities that have been made explicit.
+
+- *sample_output/* contains:
+
+  - *mygraph.gml* the channel-to-channel graph with information about the times a destination channel posted a message from a source channel.
+
+  - *my_message_chain.csv* the CSV file containing information about the *source message id*, *source channel id*, *destination message id*, *destination channel id*, *time*, and *message text*.
+
+  - *entity_frequency.json* an example file of entity frequency computed on the whole sample data. Only entities with a frequency of at least 100 appear in the file.
+
+  - *entity_frequency_channels.jsonl* an example output file of entity frequency over channels. Only entities that appear at least 100 times in a single channel appear in the file.
+
+### Limitation
+
+The Telegram Toolkit is designed to work with .jsonl files where each line of a file represents a [Telegram message as described by the Telethon API](https://tl.telethon.dev/constructors/message.html). 
+
 
 
 
