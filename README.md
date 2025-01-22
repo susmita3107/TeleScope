@@ -17,6 +17,21 @@ The repository is organized as follows:
 
     `tracking folder` - output folder for tracking the channel names and the time of the last message collected
 
+    `Telegram Toolkit` - The folder offers a Telegram data enrichment toolkit that enhances the Telegram messages by uncovering implicit information, otherwise not directly available through the platform. It reveals the channel connections i.e., channel to channel graph, provide message forwarding chain and extracts entities across channels. The method reads raw Telegram messages as JSON and extracts the additional information aggregated into new JSON files. The nature of messages on the platform and their penetration across multiple channels can address interesting research questions. 
+
+The Telegram Toolkit provides the following functionalities:
+
+1. *Entities in Telegram*. Entities are provided only using text span indexes; the Telegram Toolkit extracts them.
+
+2. *Channel to channel graph*. Given the collected data, it creates a channel-to-channel graph where nodes are the channels and edges are built when a message is forwarded from a channel (source) to a destination channel. This functionality creates a graph in [GML format](https://networkx.org/documentation/stable/reference/readwrite/gml.html). The edges are associated with the times when messages are forwarded.
+
+3. *Message chain generation*. When you post a message and someone re-posts or forwards it, you can usually see where and when the message is forwarded. This does not happen with Telegram messages. As a solution, this functionality creates a CSV file where each source message (i.e., a new message) is associated at least with one destination message (i.e., forwarded message), the forwarding time, and the message text. Messages that are never forwarded do not appear in the CSV. The user must note that the source message and its channel might not be contained in the input collection of data; this is because Telegram does not provide information about where a message is forwarded and the proposed generation uses a backward mechanism starting from the destination messages.
+
+4. *Compute the frequency of the entities over channels.* The tool computes the frequency of the entities for each channels.
+
+5. *Compute the frequency of the entities over whole data collection.* The tool computes the frequency of the entities on the whole data.
+
+
 * Files
 
     `config.py` - configurable parameters of the framework
